@@ -1,2 +1,3 @@
 # MVC
-Model View Controller 
+Model View Controller
+##STRUCTURE OF MVC DESIGN
