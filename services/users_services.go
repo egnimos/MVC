@@ -5,6 +5,12 @@ import (
 	"github.com/egnimos/mvc/utils"
 )
 
-func GetUser(userId int) (*domain.User, *utils.ApplicationError) {
-	return domain.GetUser(userId)
+type userServices struct {}
+
+var (
+	UserService userServices
+)
+
+func (us *userServices) GetUser(userId int) (*domain.User, *utils.ApplicationError) {
+	return domain.UserDao.GetUser(userId)
 }

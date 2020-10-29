@@ -2,13 +2,22 @@ package app
 
 import (
 	"fmt"
-	"github.com/egnimos/mvc/controllers"
-	"net/http"
+	"github.com/gin-gonic/gin"
 )
 
+var (
+	router *gin.Engine
+)
+
+func init() {
+	router = gin.Default()
+}
+
 func StartApp()  {
-	http.HandleFunc("/users", controllers.GetUsers)
+	mapUrls()
 
 	fmt.Println("Server is Started...")
-	http.ListenAndServe(":8080", nil)
+	if err := router.Run(":8080"); err != nil {
+		panic(err)
+	}
 }
