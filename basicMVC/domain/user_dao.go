@@ -2,15 +2,16 @@ package domain
 
 import (
 	"fmt"
-	"github.com/egnimos/mvc/utils"
 	"net/http"
+
+	"github.com/egnimos/mvc/basicMVC/utils"
 )
 
 var users = map[int]*User{
 	123: {Id: 123, FirstName: "Niteesh", LastName: "Dubey", Email: "niteeshdubey97@gmail.com"},
 }
 
-type userDao struct {}
+type userDao struct{}
 
 func init() {
 	UserDao = &userDao{}
@@ -30,7 +31,7 @@ func (ud *userDao) GetUser(userId int) (*User, *utils.ApplicationError) {
 	}
 	return nil, &utils.ApplicationError{
 		Message: fmt.Sprint("USER NOT FOUND!!", userId),
-		Status: http.StatusNotFound,
-		Code: "Not Found",
+		Status:  http.StatusNotFound,
+		Code:    "Not Found",
 	}
 }

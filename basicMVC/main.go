@@ -1,7 +1,7 @@
 package main
 
-import "github.com/egnimos/mvc/app"
+import "github.com/egnimos/mvc/basicMVC/app"
 
-func main()  {
+func main() {
 	app.StartApp()
 }

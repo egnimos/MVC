@@ -1,11 +1,11 @@
 package services
 
 import (
-	"github.com/egnimos/mvc/domain"
-	"github.com/egnimos/mvc/utils"
+	"github.com/egnimos/mvc/basicMVC/domain"
+	"github.com/egnimos/mvc/basicMVC/utils"
 )
 
-type userServices struct {}
+type userServices struct{}
 
 var (
 	UserService userServices

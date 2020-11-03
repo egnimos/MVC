@@ -1,23 +1,24 @@
 package controllers
 
 import (
-	"github.com/egnimos/mvc/services"
-	"github.com/egnimos/mvc/utils"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
+
+	"github.com/egnimos/mvc/basicMVC/services"
+	"github.com/egnimos/mvc/basicMVC/utils"
+	"github.com/gin-gonic/gin"
 )
 
 //controllers handle the requests from the client
-func GetUsers( ctx *gin.Context) {
+func GetUsers(ctx *gin.Context) {
 	userId := ctx.Param("user_id")
 	//convert the string into int
 	id, err := strconv.Atoi(userId)
 	if err != nil {
 		apiErr := &utils.ApplicationError{
 			Message: "UserId must be a number",
-			Status: http.StatusBadRequest,
-			Code: "bad_request",
+			Status:  http.StatusBadRequest,
+			Code:    "bad_request",
 		}
 		utils.RespondError(ctx, apiErr)
 		return
@@ -32,4 +33,3 @@ func GetUsers( ctx *gin.Context) {
 	//print the result
 	utils.Respond(ctx, http.StatusCreated, user)
 }
-
