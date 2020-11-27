@@ -3,15 +3,15 @@ package github_provider
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"net/http"
+
 	"github.com/egnimos/mvc/src/api/clients/restclient"
 	"github.com/egnimos/mvc/src/api/domain/github"
-	"io/ioutil"
-	"log"
-	"net/http"
 )
 
 const (
-	headerAuthorization = "Authorization"
+	headerAuthorization       = "Authorization"
 	headerAuthorizationFormat = "token %s"
 
 	//url
@@ -29,7 +29,6 @@ func CreateRepo(accessToken string, request github.CreateRepoRequest) (*github.C
 	//sending the parameters to restClient api and get the response from the method
 	response, err := restclient.Post(urlCreateRepo, request, headers)
 	if err != nil {
-		log.Fatalln("error when trying to create a new repo in github")
 		return nil, &github.GitErrorResponse{StatusCode: http.StatusBadRequest, Message: err.Error()}
 	}
 
@@ -43,19 +42,22 @@ func CreateRepo(accessToken string, request github.CreateRepoRequest) (*github.C
 
 	//if the github sends the error in response
 	if response.StatusCode > 299 {
-		var errResponse github.GitErrorResponse
+		fmt.Println(response.StatusCode)
+ 		var errResponse github.GitErrorResponse
 		//covert JSON into struct
-		if err := json.Unmarshal(bytes, errResponse); err != nil {
-			return nil, &github.GitErrorResponse{StatusCode: http.StatusInternalServerError, Message: "invalid json response body"}
+		if err := json.Unmarshal(bytes, &errResponse); err != nil {
+			fmt.Println("error while unmarshaling the error response code", err)
+			return nil, &github.GitErrorResponse{StatusCode: http.StatusBadRequest, Message: "invalid json response body"}
 		}
 		errResponse.StatusCode = response.StatusCode
+		fmt.Println("coversion is done")
 		return nil, &errResponse
 	}
 
 	//if there is no error
 	var result github.CreateRepoResponse
 	//convert the JSON into STRUCT
-	if err := json.Unmarshal(bytes, result); err != nil {
+	if err := json.Unmarshal(bytes, &result); err != nil {
 		return nil, &github.GitErrorResponse{StatusCode: http.StatusInternalServerError, Message: "error when trying to unmarshal the github response"}
 	}
 	return &result, nil
